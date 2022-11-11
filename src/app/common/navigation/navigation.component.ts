@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Navigation } from '@common/navigation/navigation.interface';
 import { NAVIGATION_MODULE_IMPORTS } from '@common/navigation/navigation.imports';
+import { FormControl } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -24,4 +25,6 @@ export class NavigationComponent {
       map(result => result.matches),
       shareReplay()
     );
+
+  readonly searchControl = new FormControl<string>('');
 }

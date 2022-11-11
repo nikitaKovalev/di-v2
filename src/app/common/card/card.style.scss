@@ -1,0 +1,11 @@
+.example-card {
+  max-width: 250px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+::ng-deep .mat-card-header .mat-card-title {
+    font-size: 16px;
+}
