@@ -1,30 +1,36 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export abstract class BaseCrudApi<T> {
-  protected abstract readonly _suffix: string;
-  protected readonly _http: HttpClient = inject(HttpClient);
+  protected abstract _items: T[];
 
   create<Body>(data: Body): Observable<T> {
-    return this._http.post<T>(
-      `assets/mocks/${this._suffix}`,
-      data
-    );
+    this._items.push(data as any);
+
+    return of(data as any);
   }
 
-  search(): Observable<T[]> {
-    return this._http.get<T[]>(
-      `assets/mocks/${this._suffix}`
-    );
+  search(value?: string, searchKey?: keyof T): Observable<T[]> {
+    return of(this._items)
+      .pipe(
+        map((items: T[]) => {
+          if (!value) {
+            return items;
+          }
+
+          return items.filter((i: T) => {
+            const item = i as any;
+
+            return item[searchKey].toLowerCase().includes(value.toLowerCase());
+          });
+        })
+      )
   }
 
   findOne(id: string): Observable<T> {
-    return this._http.get<T[]>(
-      `assets/mocks/${this._suffix}`
-    )
+    return of(this._items)
       .pipe(
         map((items: T[]) => {
           const item = items.find((i: T) => (i as any)['id'] == id);
@@ -35,15 +41,18 @@ export abstract class BaseCrudApi<T> {
   }
 
   update<Body>(id: string | number, data: Body): Observable<T> {
-    return this._http.put<T>(
-      `assets/mocks/${this._suffix}/${id}`,
-      data
-    );
+    const item = this._items.find((i: T) => (i as any)['id'] == id);
+
+    this._items.splice(this._items.indexOf(item!), 1, { ...item, ...data as any });
+
+    return of(data as any);
   }
 
   delete(id: string): Observable<T> {
-    return this._http.delete<T>(
-      `assets/mocks/${this._suffix}/${id}`
-    );
+    const item = this._items.find((i: T) => (i as any)['id'] == id);
+
+    this._items.splice(this._items.indexOf(item!), 1);
+
+    return of(item!);
   }
 }

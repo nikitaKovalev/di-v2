@@ -1,9 +1,12 @@
 .example-card {
   max-width: 250px;
+  min-width: 250px;
 }
 
 .example-header-image {
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 ::ng-deep .mat-card-header .mat-card-title {

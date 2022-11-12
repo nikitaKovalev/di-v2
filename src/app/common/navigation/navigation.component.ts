@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Navigation } from '@common/navigation/navigation.interface';
 import { NAVIGATION_MODULE_IMPORTS } from '@common/navigation/navigation.imports';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { expandWidth } from '@core/animations';
+import { SEARCH_CONTROL } from '@core/tokens';
 
 @Component({
   standalone: true,
@@ -32,7 +32,7 @@ export class NavigationComponent {
       shareReplay()
     );
 
-  readonly searchControl = new FormControl<string>('');
+  readonly searchControl = inject(SEARCH_CONTROL)
 
   private readonly _router = inject(Router);
   private readonly _location = inject(Location);
