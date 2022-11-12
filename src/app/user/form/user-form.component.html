@@ -1,10 +1,6 @@
-<div
-  class="details"
-  *ngIf="user$ | async as user"
-  @fadeInUp
->
+<div class="details">
   <div class="details__header">
-    <img class="details__image" [src]="user.photo || 'assets/avatar.png'"/>
+    <img class="details__image" [src]="photoControl.value || 'assets/avatar.png'"/>
   </div>
 
   <div class="details__body" [formGroup]="form">
@@ -52,12 +48,23 @@
       >
     </mat-form-field>
 
-    <button
-      mat-raised-button
-      [disabled]="form.pristine"
-      (click)="onSubmit()"
-    >
-      SAVE
-    </button>
+    <div class="details__actions">
+      <button
+        mat-raised-button
+        [disabled]="isSubmitDisabled"
+        (click)="onSubmit()"
+      >
+        SAVE
+      </button>
+
+      <button
+        *ngIf="canDelete"
+        color="warn"
+        mat-raised-button
+        (click)="onDelete()"
+      >
+        DELETE
+      </button>
+    </div>
   </div>
 </div>

@@ -1,15 +1,20 @@
 <div [@listStagger]="(users$ | async)?.length">
   <app-card
-    *ngFor="let user of users$ | async"
+    *ngFor="let user of users$ | async; trackBy: trackByFn"
     @fadeInUp
     [image]="user.photo || 'assets/avatar.png'"
     (edit)="onEdit(user)"
+    (delete)="onDelete(user.id)"
   >
     <!-- Title -->
-    <ng-template cardTitle>{{ user?.name || '' }}</ng-template>
+    <ng-template cardTitle>
+      {{ user?.name || '' }}
+    </ng-template>
 
     <!-- Subtitle -->
-    <ng-container ngProjectAs="subtitle">{{ user?.website || '' }}</ng-container>
+    <ng-container ngProjectAs="subtitle">
+      {{ user?.website || '' }}
+    </ng-container>
 
     <!-- Content -->
     <ng-container

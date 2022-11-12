@@ -7,7 +7,7 @@ export abstract class BaseCrudApi<T> {
   protected abstract _items: T[];
 
   create<Body>(data: Body): Observable<T> {
-    this._items.push(data as any);
+    this._items.push({ ...data, id: this._items.length + 1 } as any);
 
     return of(data as any);
   }
@@ -48,7 +48,7 @@ export abstract class BaseCrudApi<T> {
     return of(data as any);
   }
 
-  delete(id: string): Observable<T> {
+  delete(id: string | number): Observable<T> {
     const item = this._items.find((i: T) => (i as any)['id'] == id);
 
     this._items.splice(this._items.indexOf(item!), 1);

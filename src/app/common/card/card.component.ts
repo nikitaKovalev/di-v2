@@ -29,6 +29,9 @@ export class CardComponent implements AfterViewInit {
   @Output()
   readonly edit = new EventEmitter<void>();
 
+  @Output()
+  readonly delete = new EventEmitter<void>();
+
   @ContentChild(CARD_TITLE)
   readonly title?: TemplateRef<NgTemplateOutlet>;
 
@@ -63,6 +66,10 @@ export class CardComponent implements AfterViewInit {
 
   onEdit(): void {
     this.edit.emit();
+  }
+
+  onDelete(): void {
+    this.delete.emit();
   }
 
   private _applyColor(): void {

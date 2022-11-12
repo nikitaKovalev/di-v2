@@ -43,10 +43,14 @@ export class NavigationComponent {
   }
 
   get isDetailsRouteActive(): boolean {
-    return this._router.url.search(/\d/) !== -1;
+    return this._router.url.search(/\d|create/) !== -1;
   }
 
   onBack(): void {
     this._location.back();
+  }
+
+  onCreate() {
+    this._router.navigate([this._router.url, 'create']);
   }
 }
