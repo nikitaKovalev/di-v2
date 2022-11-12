@@ -24,7 +24,7 @@ import { stringHashToHsl } from '@common/card/card-color';
 })
 export class CardComponent implements AfterViewInit {
   @Input()
-  png = '';
+  image = '';
 
   @Output()
   readonly edit = new EventEmitter<void>();
@@ -52,7 +52,7 @@ export class CardComponent implements AfterViewInit {
   }
 
   get imagePath(): string {
-    return `url('assets/${this.png}')`;
+    return `url('${this.image}')`;
   }
 
   hasTitle(ref?: ElementRef): ref is ElementRef {

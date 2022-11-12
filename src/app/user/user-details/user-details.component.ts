@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UserApi } from '@core/api/user.api';
 import { Observable, tap } from 'rxjs';
 import { User } from '@core/interfaces';
@@ -20,15 +20,24 @@ export class UserDetailsComponent {
   );
 
   readonly form = new FormGroup<Form<User>>({
+    id: new FormControl<number | null>(null),
     name: new FormControl<string>('', Validators.required),
     email: new FormControl<string>('', Validators.required),
     phone: new FormControl<string>(''),
     website: new FormControl<string>(''),
   });
 
+  private readonly _userApi = inject(UserApi);
+
   onSubmit(): void {
     if (this.form.invalid) {
       return this.form.markAllAsTouched();
     }
+
+    const { id, ...user } = this.form.value;
+
+    this._userApi.update(id!, user)
+      .pipe()
+      .subscribe()
   }
 }

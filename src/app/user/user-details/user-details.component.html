@@ -4,7 +4,7 @@
   @fadeInUp
 >
   <div class="details__header">
-    <img class="details__image" src="assets/avatar.png"/>
+    <img class="details__image" [src]="user.photo || 'assets/avatar.png'"/>
   </div>
 
   <div class="details__body" [formGroup]="form">

@@ -5,5 +5,5 @@ import { User } from '../interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class UserApi extends BaseCrudApi<User> {
-  protected readonly _suffix = 'users';
+  protected readonly _suffix = 'users.json';
 }

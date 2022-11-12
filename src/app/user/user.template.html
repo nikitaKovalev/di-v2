@@ -2,7 +2,7 @@
   <app-card
     *ngFor="let user of users$ | async"
     @fadeInUp
-    png="avatar.png"
+    [image]="user.photo || 'assets/avatar.png'"
     (edit)="onEdit(user)"
   >
     <!-- Title -->
