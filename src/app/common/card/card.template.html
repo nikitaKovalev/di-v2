@@ -1,34 +1,40 @@
 <mat-card class="example-card" [style.background]="bgColor">
   <mat-card-header>
+    <!-- Avatar -->
     <div
       class="example-header-image"
       mat-card-avatar
-      [style.background-image]="'url(' + 'assets/' + png +')'"
+      [style.background-image]="imagePath"
     ></div>
 
+    <!-- Title -->
     <mat-card-title>
       <span #titleRef>
         <ng-container *ngTemplateOutlet="title || null"></ng-container>
       </span>
     </mat-card-title>
 
+    <!-- Subtitle -->
     <mat-card-subtitle>
       <ng-content select="subtitle"></ng-content>
     </mat-card-subtitle>
   </mat-card-header>
 
+  <!-- Preview image -->
   <img
     *ngIf="png"
     mat-card-image
     [src]="'assets/' + png"
   >
 
+  <!-- Content -->
   <mat-card-content>
     <p>
       <ng-content select="content"></ng-content>
     </p>
   </mat-card-content>
 
+  <!-- Actions -->
   <mat-card-actions>
     <button mat-button (click)="onEdit()">EDIT</button>
     <button mat-button>DELETE</button>

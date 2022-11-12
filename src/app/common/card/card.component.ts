@@ -51,6 +51,10 @@ export class CardComponent implements AfterViewInit {
     this._applyColor();
   }
 
+  get imagePath(): string {
+    return `url('assets/${this.png}')`;
+  }
+
   hasTitle(ref?: ElementRef): ref is ElementRef {
     const text = ref?.nativeElement!.innerText;
 

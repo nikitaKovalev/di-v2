@@ -5,6 +5,9 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Navigation } from '@common/navigation/navigation.interface';
 import { NAVIGATION_MODULE_IMPORTS } from '@common/navigation/navigation.imports';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -28,4 +31,20 @@ export class NavigationComponent {
     );
 
   readonly searchControl = new FormControl<string>('');
+
+  private readonly _router = inject(Router);
+  private readonly _location = inject(Location);
+  private readonly _title = inject(Title);
+
+  get title(): string {
+    return this._title.getTitle();
+  }
+
+  get isDetailsRouteActive(): boolean {
+    return this._router.url.search(/\d/) !== -1;
+  }
+
+  onBack(): void {
+    this._location.back();
+  }
 }

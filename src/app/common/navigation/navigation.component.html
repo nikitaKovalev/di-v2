@@ -30,15 +30,34 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
-      <mat-form-field style="width: 100%; font-size: 14px">
-        <input
-          autocomplete="off"
-          type="text"
-          matInput
-          placeholder="Search"
-          [formControl]="searchControl"
+      <div style="width: calc(100% - 45px); font-size: 14px">
+        <mat-form-field
+          style="width: 61%;"
+          *ngIf="!isDetailsRouteActive; else titleTmp"
         >
-      </mat-form-field>
+          <input
+            autocomplete="off"
+            type="text"
+            matInput
+            placeholder="Search"
+            [formControl]="searchControl"
+          >
+        </mat-form-field>
+
+        <ng-template #titleTmp>
+          {{ title }}
+        </ng-template>
+      </div>
+
+      <button
+        *ngIf="isDetailsRouteActive"
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="onBack()"
+      >
+        <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
+      </button>
     </mat-toolbar>
 
     <div class="sidenav-container__content">
