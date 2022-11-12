@@ -31,18 +31,20 @@
       </button>
 
       <div style="width: calc(100% - 45px); font-size: 14px">
-        <mat-form-field
-          style="width: 61%;"
-          *ngIf="!isDetailsRouteActive; else titleTmp"
-        >
-          <input
-            autocomplete="off"
-            type="text"
-            matInput
-            placeholder="Search"
-            [formControl]="searchControl"
+        <div style="width: 61%;" *ngIf="!isDetailsRouteActive; else titleTmp">
+          <mat-form-field
+            style="width: 100%;"
+            @expandWidth
           >
-        </mat-form-field>
+            <input
+              autocomplete="off"
+              type="text"
+              matInput
+              placeholder="Search"
+              [formControl]="searchControl"
+            >
+          </mat-form-field>
+        </div>
 
         <ng-template #titleTmp>
           {{ title }}
@@ -56,7 +58,7 @@
         mat-icon-button
         (click)="onBack()"
       >
-        <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
+        <mat-icon class="--icon" aria-label="Side nav toggle icon">arrow_back</mat-icon>
       </button>
     </mat-toolbar>
 
