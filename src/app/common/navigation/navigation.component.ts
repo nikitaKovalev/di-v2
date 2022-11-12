@@ -8,6 +8,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { expandWidth } from '@core/animations';
 
 @Component({
   standalone: true,
@@ -15,6 +16,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  animations: [expandWidth],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
