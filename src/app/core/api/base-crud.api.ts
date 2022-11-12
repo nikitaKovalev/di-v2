@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export abstract class BaseCrudApi<T> {
   protected abstract readonly _suffix: string;
-  private readonly _http: HttpClient = inject(HttpClient);
+  protected readonly _http: HttpClient = inject(HttpClient);
 
   create<Body>(data: Body): Observable<T> {
     return this._http.post<T>(

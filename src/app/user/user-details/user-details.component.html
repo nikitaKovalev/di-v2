@@ -1,0 +1,59 @@
+<div
+  class="details"
+  *ngIf="user$ | async as user"
+  @fadeInUp
+>
+  <div class="details__header">
+    <img class="details__image" src="assets/avatar.png"/>
+  </div>
+
+  <div class="details__body" [formGroup]="form">
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        matInput
+        placeholder="Name"
+        formControlName="name"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        matInput
+        placeholder="Email"
+        formControlName="email"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        matInput
+        placeholder="Phone"
+        formControlName="phone"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        matInput
+        placeholder="Website"
+        formControlName="website"
+      >
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      [disabled]="form.pristine"
+      (click)="onSubmit()"
+    >
+      SAVE
+    </button>
+  </div>
+</div>

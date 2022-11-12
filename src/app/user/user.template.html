@@ -1,0 +1,22 @@
+<div [@listStagger]="(users$ | async)?.length">
+  <app-card
+    *ngFor="let user of users$ | async"
+    @fadeInUp
+    png="avatar.png"
+    (edit)="onEdit(user)"
+  >
+    <!-- Title -->
+    <ng-template cardTitle>{{ user?.name || '' }}</ng-template>
+
+    <!-- Subtitle -->
+    <ng-container ngProjectAs="subtitle">{{ user?.website || '' }}</ng-container>
+
+    <!-- Content -->
+    <ng-container
+      *ngIf="user?.username"
+      ngProjectAs="content"
+    >
+      You can search by: <b>{{ user!.username }}</b>
+    </ng-container>
+  </app-card>
+</div>

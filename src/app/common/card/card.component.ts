@@ -4,8 +4,8 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  ElementRef,
-  inject, Input,
+  ElementRef, EventEmitter,
+  inject, Input, Output,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -26,6 +26,9 @@ export class CardComponent implements AfterViewInit {
   @Input()
   png = '';
 
+  @Output()
+  readonly edit = new EventEmitter<void>();
+
   @ContentChild(CARD_TITLE)
   readonly title?: TemplateRef<NgTemplateOutlet>;
 
@@ -42,7 +45,7 @@ export class CardComponent implements AfterViewInit {
 
   private _bgColor = '';
 
-  private readonly _cdRef: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private readonly _cdRef = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
     this._applyColor();
@@ -52,6 +55,10 @@ export class CardComponent implements AfterViewInit {
     const text = ref?.nativeElement!.innerText;
 
     return text && text.length > 0;
+  }
+
+  onEdit(): void {
+    this.edit.emit();
   }
 
   private _applyColor(): void {

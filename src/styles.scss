@@ -2,3 +2,40 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.details {
+  display: flex;
+  gap: 16px;
+
+  &__header, &__image {
+    width: 266px;
+    height: 266px;
+  }
+
+  &__header {
+    overflow: hidden;
+  }
+
+  &__image {
+    object-fit: cover;
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 266px;
+  }
+
+  &__row {
+    display: flex;
+  }
+
+  &__label {
+    min-width: 70px;
+  }
+
+  &__value {
+    font-weight: 500;
+  }
+}
