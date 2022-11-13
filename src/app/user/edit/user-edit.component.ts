@@ -4,9 +4,12 @@ import { Observable } from 'rxjs';
 import { User } from '@core/interfaces';
 import { fadeInUp } from '@core/animations';
 import { getItemById } from '@core/utils';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
+import { UserFormComponent } from '../form/user-form.component';
 
 @Component({
+  standalone: true,
+  imports: [UserFormComponent, AsyncPipe],
   template: `
     <app-user-form
       @fadeInUp 

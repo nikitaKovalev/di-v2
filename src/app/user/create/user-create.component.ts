@@ -3,8 +3,11 @@ import { fadeInUp } from '@core/animations';
 import { User } from '@core/interfaces';
 import { UserApi } from '@core/api/user.api';
 import { Location } from '@angular/common';
+import { UserFormComponent } from '../form/user-form.component';
 
 @Component({
+  standalone: true,
+  imports: [UserFormComponent],
   selector: 'app-user-create',
   template: `
     <app-user-form 

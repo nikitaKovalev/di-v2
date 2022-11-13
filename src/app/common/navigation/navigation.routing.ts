@@ -12,11 +12,6 @@ const routes: Routes = [
     title: 'Todos',
     loadChildren: () => import('../../todo/todo.module').then(m => m.TodoModule),
   },
-  {
-    path: 'post',
-    title: 'Posts',
-    loadChildren: () => import('../../post/post.module').then(m => m.PostModule),
-  },
 ];
 
 @NgModule({

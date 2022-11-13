@@ -23,7 +23,6 @@ export class NavigationComponent {
   readonly links: Navigation[] = [
     { name: 'Users', path: '/user' },
     { name: 'Todos', path: '/todo' },
-    { name: 'Posts', path: '/post' },
   ];
 
   readonly isHandset$: Observable<boolean> =

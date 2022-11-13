@@ -29,7 +29,7 @@ export class UserComponent {
   ) {}
 
   onEdit(user: User): void {
-    this._router.navigate(['user', user.id]);
+    this._router.navigate([this._router.url, 'edit', user.id]);
   }
 
   onDelete(id: number): void {

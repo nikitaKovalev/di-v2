@@ -1,0 +1,48 @@
+<div class="details">
+  <div class="details__header">
+    <img class="details__image" src="assets/todo.jpeg"/>
+  </div>
+
+  <div class="details__body" [formGroup]="form">
+    <!-- Title -->
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        placeholder="Title"
+        matInput
+        formControlName="title"
+      >
+    </mat-form-field>
+
+    <!-- Body -->
+    <mat-form-field>
+      <input
+        type="text"
+        autocomplete="off"
+        placeholder="Body"
+        matInput
+        formControlName="body"
+      >
+    </mat-form-field>
+
+    <div class="details__actions">
+      <button
+        mat-raised-button
+        [disabled]="isSubmitDisabled"
+        (click)="onSubmit()"
+      >
+        SAVE
+      </button>
+
+      <button
+        *ngIf="canDelete"
+        color="warn"
+        mat-raised-button
+        (click)="onDelete()"
+      >
+        DELETE
+      </button>
+    </div>
+  </div>
+</div>

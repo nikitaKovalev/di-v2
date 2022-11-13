@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UserComponent } from './user.component';
-import { UserEditComponent } from './edit/user-edit.component';
-import { UserCreateComponent } from './create/user-create.component';
 
 const routes: Routes = [
   {
@@ -13,13 +11,13 @@ const routes: Routes = [
   {
     path: 'create',
     title: 'User create',
-    component: UserCreateComponent,
+    loadComponent: () => import('./create/user-create.component').then(c => c.UserCreateComponent),
   },
   {
-    path: ':id',
+    path: 'edit/:id',
     title: 'User details',
-    component: UserEditComponent,
-  }
+    loadComponent: () => import('./edit/user-edit.component').then(c => c.UserEditComponent),
+  },
 ];
 
 @NgModule({

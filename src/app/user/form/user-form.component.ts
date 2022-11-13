@@ -3,8 +3,11 @@ import { Form } from '@core/types';
 import { User } from '@core/interfaces';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { USER_FORM_IMPORT } from './user-form.import';
 
 @Component({
+  standalone: true,
+  imports: USER_FORM_IMPORT,
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
