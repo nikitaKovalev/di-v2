@@ -1,0 +1,29 @@
+::ng-deep .dialog {
+  .mat-dialog-container {
+    border-radius: 2px;
+    padding: 12px 0 24px;
+  }
+
+  .mat-dialog-title {
+    padding: 0 12px;
+    margin: 0 !important;
+    font-weight: bold;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mat-dialog-content {
+    padding: 12px;
+    margin: 0;
+  }
+
+  .mat-dialog-actions {
+    padding: 12px;
+  }
+
+  .mat-dialog-title, .mat-dialog-content, .mat-dialog-actions {
+    font-size: 1rem;
+  }
+}

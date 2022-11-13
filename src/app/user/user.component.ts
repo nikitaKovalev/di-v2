@@ -33,6 +33,6 @@ export class UserComponent {
   }
 
   onDelete(id: number): void {
-    // confirm delete user
+    //
   }
 }

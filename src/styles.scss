@@ -45,3 +45,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     gap: 1rem;
   }
 }
+
+.snackbar {
+  color: #fff;
+
+  &--success {
+    background-color: #4caf50;
+  }
+
+  &--info {
+    background-color: #3f51b5;
+  }
+
+  &--error {
+    background-color: #f44336;
+  }
+
+  &--warning {
+    background-color: #ff9800;
+  }
+
+  .mat-simple-snackbar {
+    justify-content: center;
+  }
+}
