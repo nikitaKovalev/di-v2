@@ -1,27 +1,33 @@
 <div [@listStagger]="(users$ | async)?.length">
-  <app-card
-    *ngFor="let user of users$ | async; trackBy: trackByFn"
-    @fadeInUp
-    [image]="user.photo || 'assets/avatar.png'"
-    (edit)="onEdit(user)"
-    (delete)="onDelete(user.id)"
-  >
-    <!-- Title -->
-    <ng-template cardTitle>
-      {{ user?.name || '' }}
-    </ng-template>
-
-    <!-- Subtitle -->
-    <ng-container ngProjectAs="subtitle">
-      {{ user?.website || '' }}
-    </ng-container>
-
-    <!-- Content -->
-    <ng-container
-      *ngIf="user?.username"
-      ngProjectAs="content"
+  <ng-container *ngIf="users$ | async as users">
+    <app-card
+      *ngFor="let user of users; trackBy: trackByFn"
+      @fadeInUp
+      [image]="user.photo || 'assets/avatar.png'"
+      (edit)="onEdit(user)"
+      (delete)="onDelete(user.id)"
     >
-      You can search by: <b>{{ user!.username }}</b>
+      <!-- Title -->
+      <ng-template cardTitle>
+        {{ user?.name || '' }}
+      </ng-template>
+
+      <!-- Subtitle -->
+      <ng-container ngProjectAs="subtitle">
+        {{ user?.website || '' }}
+      </ng-container>
+
+      <!-- Content -->
+      <ng-container
+        *ngIf="user?.username"
+        ngProjectAs="content"
+      >
+        You can search by: <b>{{ user!.username }}</b>
+      </ng-container>
+    </app-card>
+
+    <ng-container *ngIf="!users.length">
+      Nothing found
     </ng-container>
-  </app-card>
+  </ng-container>
 </div>

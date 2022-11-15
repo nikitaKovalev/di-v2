@@ -1,22 +1,28 @@
 <div [@listStagger]="(todos$ | async)?.length">
-  <app-card
-    *ngFor="let todo of todos$ | async; trackBy: trackByFn"
-    @fadeInUp
-    image="assets/todo.jpeg"
-    (edit)="onEdit(todo)"
-    (delete)="onDelete(todo.id)"
-  >
-    <!-- Title -->
-    <ng-template cardTitle>
-      {{ todo?.title || '' }}
-    </ng-template>
-
-    <!-- Content -->
-    <ng-container
-      *ngIf="todo?.body"
-      ngProjectAs="content"
+  <ng-container *ngIf="todos$ | async as todos">
+    <app-card
+      *ngFor="let todo of todos; trackBy: trackByFn"
+      @fadeInUp
+      image="assets/todo.jpeg"
+      (edit)="onEdit(todo)"
+      (delete)="onDelete(todo.id)"
     >
-      <b>{{ todo!.body }}</b>
+      <!-- Title -->
+      <ng-template cardTitle>
+        {{ todo?.title || '' }}
+      </ng-template>
+
+      <!-- Content -->
+      <ng-container
+        *ngIf="todo?.body"
+        ngProjectAs="content"
+      >
+        <b>{{ todo!.body }}</b>
+      </ng-container>
+    </app-card>
+
+    <ng-container *ngIf="!todos.length">
+      Nothing found
     </ng-container>
-  </app-card>
+  </ng-container>
 </div>

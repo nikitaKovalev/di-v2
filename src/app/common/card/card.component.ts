@@ -38,20 +38,20 @@ export class CardComponent implements AfterViewInit {
   @ViewChild('titleRef')
   readonly titleRef?: ElementRef;
 
-  get bgColor(): string {
-    return this._bgColor;
-  }
-
-  set bgColor(color: string) {
-    this._bgColor = color;
-  }
-
   private _bgColor = '';
 
   private readonly _cdRef = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
     this._applyColor();
+  }
+
+  get bgColor(): string {
+    return this._bgColor;
+  }
+
+  set bgColor(color: string) {
+    this._bgColor = color;
   }
 
   get imagePath(): string {

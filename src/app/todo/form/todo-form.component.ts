@@ -13,6 +13,11 @@ import { TODO_IMPORT } from './todo-form.import';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoFormComponent {
+  @Input('todo')
+  set patchForm(todo: Todo) {
+    this.form.patchValue(todo, { emitEvent: false });
+  }
+
   @Input()
   get canDelete(): boolean {
     return this._canDelete;

@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { fadeInUp, listStagger } from '@core/animations';
 import { TodoApi } from '@core/api';
 import { Todo } from '@core/interfaces';
 import { Router } from '@angular/router';
-import { SEARCH_CONTROL } from '@core/tokens';
-import { FormControl } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
-import { startWith } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { finalize, startWith, Subject } from 'rxjs';
+import { SpinnerService } from '@common/spinner';
+import { SnackbarService } from '@core/services/snackbar.service';
+import { ConfirmService } from '@common/confirm';
 
 @Component({
   templateUrl: './todo.template.html',
@@ -15,18 +16,21 @@ import { startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
-  readonly todos$ = this._control.valueChanges.pipe(
+  private readonly _search$ = new Subject<void>();
+
+  readonly todos$ = this._search$.asObservable().pipe(
     startWith(''),
-    switchMap((value: string) => this._todoApi.search(value, 'title')),
+    switchMap(() => this._todoApi.search()),
   );
 
   readonly trackByFn = (_: number, { id }: Todo): number => id;
 
-  private readonly _router: Router = inject(Router);
-  private readonly _todoApi: TodoApi = inject(TodoApi);
-
   constructor(
-    @Inject(SEARCH_CONTROL) private readonly _control: FormControl<string>,
+    @Inject(Router) private readonly _router: Router,
+    @Inject(TodoApi) private readonly _todoApi: TodoApi,
+    @Inject(SpinnerService) private readonly _spinner: SpinnerService,
+    @Inject(SnackbarService) private readonly _snackbar: SnackbarService,
+    @Inject(ConfirmService) private readonly _confirm: ConfirmService,
   ) {}
 
   onEdit(todo: Todo): void {
@@ -34,6 +38,18 @@ export class TodoComponent {
   }
 
   onDelete(id: number): void {
-    //
+    this._confirm.delete('You are about to delete todo', 'Are you sure you wish to proceed?')
+      .pipe(
+        tap(() => this._spinner.open()),
+        switchMap(() => this._todoApi.delete(id)),
+        finalize(() => this._spinner.close()),
+      )
+      .subscribe({
+        next: () => {
+          this._snackbar.open('Todo deleted', 'success');
+          this._search$.next();
+        },
+        error: () => this._snackbar.open('Todo not deleted', 'error'),
+      })
   }
 }

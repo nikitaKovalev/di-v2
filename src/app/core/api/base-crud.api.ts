@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { mapTo, Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -7,9 +7,11 @@ export abstract class BaseCrudApi<T> {
   protected abstract _items: T[];
 
   create<Body>(data: Body): Observable<T> {
-    this._items.push({ ...data, id: this._items.length + 1 } as any);
+    const item = { ...data, id: this._items.length + 1 };
 
-    return of(data as any);
+    this._items.push(item as unknown as T);
+
+    return timer(350).pipe(mapTo(item as unknown as T));
   }
 
   search(value?: string, searchKey?: keyof T): Observable<T[]> {
@@ -25,8 +27,8 @@ export abstract class BaseCrudApi<T> {
 
             return item[searchKey].toLowerCase().includes(value.toLowerCase());
           });
-        })
-      )
+        }),
+      );
   }
 
   findOne(id: string): Observable<T> {
@@ -45,7 +47,7 @@ export abstract class BaseCrudApi<T> {
 
     this._items.splice(this._items.indexOf(item!), 1, { ...item, ...data as any });
 
-    return of(data as any);
+    return timer(350).pipe(mapTo(item!));
   }
 
   delete(id: string | number): Observable<T> {
@@ -53,6 +55,6 @@ export abstract class BaseCrudApi<T> {
 
     this._items.splice(this._items.indexOf(item!), 1);
 
-    return of(item!);
+    return timer(550).pipe(mapTo(item!));
   }
 }

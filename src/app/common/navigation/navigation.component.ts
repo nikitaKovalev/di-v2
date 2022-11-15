@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { expandWidth } from '@core/animations';
-import { SEARCH_CONTROL } from '@core/tokens';
+import { FormControl } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -31,7 +31,7 @@ export class NavigationComponent {
       shareReplay()
     );
 
-  readonly searchControl = inject(SEARCH_CONTROL)
+  readonly searchControl = new FormControl<string>('');
 
   private readonly _router = inject(Router);
   private readonly _location = inject(Location);
