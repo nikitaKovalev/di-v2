@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { expandWidth } from '@core/animations';
 import { FormControl } from '@angular/forms';
+import { SEARCH_CONTROL } from '@core/tokens/search-control.token';
 
 @Component({
   standalone: true,
@@ -31,7 +32,7 @@ export class NavigationComponent {
       shareReplay()
     );
 
-  readonly searchControl = new FormControl<string>('');
+  readonly searchControl = inject(SEARCH_CONTROL);
 
   private readonly _router = inject(Router);
   private readonly _location = inject(Location);

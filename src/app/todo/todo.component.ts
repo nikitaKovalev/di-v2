@@ -1,36 +1,43 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { fadeInUp, listStagger } from '@core/animations';
-import { TodoApi } from '@core/api';
 import { Todo } from '@core/interfaces';
 import { Router } from '@angular/router';
-import { switchMap, tap } from 'rxjs/operators';
-import { finalize, startWith, Subject } from 'rxjs';
-import { SpinnerService } from '@common/spinner';
-import { SnackbarService } from '@core/services/snackbar.service';
-import { ConfirmService } from '@common/confirm';
+import { CrudService } from '@core/services/crud.service';
+import { API } from '@core/tokens';
+import { TodoApi } from '@core/api';
+import { MESSAGES } from '@core/tokens/messages.token';
 
 @Component({
   templateUrl: './todo.template.html',
   styleUrls: ['./todo.style.scss'],
   animations: [listStagger, fadeInUp],
+  providers: [
+    CrudService,
+    { provide: API, useExisting: TodoApi },
+    {
+      provide: MESSAGES,
+      useValue: {
+      successEdit: 'Todo has been successfully edited',
+      successDelete: 'Todo has been successfully deleted',
+      successCreate: 'Todo has been successfully created',
+      errorEdit: 'Todo has not been edited',
+      errorDelete: 'Todo has not been deleted',
+      errorCreate: 'Todo has not been created',
+      confirmDelete: 'Are you sure you want to delete this todo?',
+      delete: 'Delete',
+      },
+    }
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
-  private readonly _search$ = new Subject<void>();
-
-  readonly todos$ = this._search$.asObservable().pipe(
-    startWith(''),
-    switchMap(() => this._todoApi.search()),
-  );
+  readonly todos$ = this._crudService.list$('title');
 
   readonly trackByFn = (_: number, { id }: Todo): number => id;
 
   constructor(
     @Inject(Router) private readonly _router: Router,
-    @Inject(TodoApi) private readonly _todoApi: TodoApi,
-    @Inject(SpinnerService) private readonly _spinner: SpinnerService,
-    @Inject(SnackbarService) private readonly _snackbar: SnackbarService,
-    @Inject(ConfirmService) private readonly _confirm: ConfirmService,
+    @Inject(CrudService) private readonly _crudService: CrudService<Todo>,
   ) {}
 
   onEdit(todo: Todo): void {
@@ -38,18 +45,6 @@ export class TodoComponent {
   }
 
   onDelete(id: number): void {
-    this._confirm.delete('You are about to delete todo', 'Are you sure you wish to proceed?')
-      .pipe(
-        tap(() => this._spinner.open()),
-        switchMap(() => this._todoApi.delete(id)),
-        finalize(() => this._spinner.close()),
-      )
-      .subscribe({
-        next: () => {
-          this._snackbar.open('Todo deleted', 'success');
-          this._search$.next();
-        },
-        error: () => this._snackbar.open('Todo not deleted', 'error'),
-      })
+    this._crudService.delete(id, () => this._crudService.search());
   }
 }
