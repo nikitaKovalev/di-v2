@@ -8,14 +8,15 @@ import { UserFormComponent } from '../form/user-form.component';
 import { SpinnerService } from '@common/spinner';
 import { SnackbarService } from '@core/services/snackbar.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { filter, map, switchMap } from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {ConfirmService} from '@common/confirm';
 
 @Component({
   standalone: true,
   imports: [UserFormComponent, AsyncPipe],
   template: `
     <app-user-form
-      @fadeInUp 
+      @fadeInUp
       canDelete="true"
       [user]="(user$ | async)!"
       (submit)="onEditUser($event)"
@@ -40,6 +41,7 @@ export class UserEditComponent implements OnDestroy {
     @Inject(Location) private readonly _location: Location,
     @Inject(SpinnerService) private readonly _spinner: SpinnerService,
     @Inject(SnackbarService) private readonly _snackbar: SnackbarService,
+    @Inject(ConfirmService) private readonly _confirm: ConfirmService,
   ) {}
 
   ngOnDestroy(): void {
@@ -64,18 +66,19 @@ export class UserEditComponent implements OnDestroy {
   }
 
   onDeleteUser(user: User): void {
-    this._spinner.open();
-    this._userApi.delete(user.id)
+    this._confirm.delete(`Delete ${user.name}?`, 'Are you sure you want to delete this user?')
       .pipe(
+        tap(() => this._spinner.open()),
+        switchMap(() => this._userApi.delete(user.id)),
         finalize(() => this._spinner.close()),
-        takeUntil(this._destroyed$),
+        takeUntil(this._destroyed$)
       )
       .subscribe({
         next: () => {
-          this._snackbar.open('User deleted', 'success');
+          this._snackbar.open(`User ${user.name} deleted`, 'success');
           this._location.back();
         },
-        error: () => this._snackbar.open('User deletion failed', 'error'),
+        error: () => this._snackbar.open(`User ${user.name} delete failed`, 'error'),
       });
   }
 }
