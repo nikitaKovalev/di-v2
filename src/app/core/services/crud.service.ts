@@ -15,7 +15,6 @@ import { FormControl } from '@angular/forms';
 @Injectable({ providedIn: 'root' })
 export class CrudService<T> implements OnDestroy {
   private readonly _destroyed$ = new Subject<void>();
-  private readonly _search$ = new Subject<void>();
 
   constructor(
     @Inject(ActivatedRoute) private readonly _activatedRoute: ActivatedRoute,
@@ -53,8 +52,26 @@ export class CrudService<T> implements OnDestroy {
     this._control.patchValue('');
   }
 
-  create(item: T): void {
+  create(item: T, callback?: () => void): void {
+    this._spinner.open();
+    this._api.create(item)
+      .pipe(
+        finalize(() => this._spinner.close()),
+        takeUntil(this._destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this._snackbar.open(this._messages.successCreate, 'success');
 
+          if (callback) {
+            callback();
+          } else {
+            this._location.back();
+
+          }
+        },
+        error: () => this._snackbar.open(this._messages.errorCreate, 'error'),
+      });
   }
 
   update(id: string | number, item: T): void {

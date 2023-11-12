@@ -13,6 +13,7 @@ const routes: Routes = [
   {
     path: 'create',
     title: 'User create',
+    providers: [{ provide: API, useExisting: UserApi }],
     loadComponent: () => import('./create/user-create.component').then(c => c.UserCreateComponent),
   },
   {
